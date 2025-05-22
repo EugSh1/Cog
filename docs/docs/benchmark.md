@@ -4,7 +4,7 @@ title: Benchmark
 
 # Benchmark
 
-We compared **Cog (1.0.4)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
+We compared **Cog (1.0.5)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
 using [autocannon](https://www.npmjs.com/package/autocannon) with the following code:
 
 ```ts
@@ -47,22 +47,22 @@ for (const route of routes) {
 | Route              | Framework | Requests/sec | Latency (avg) | Errors |
 | ------------------ | --------- | ------------ | ------------- | ------ |
 | `/`                | Hono      | 62514.91     | 12.29 ms      | 0      |
-|                    | Cog       | 49764.37     | 15.58 ms      | 0      |
+|                    | Cog       | 55879.28     | 13.86 ms      | 0      |
 |                    | Express   | 14745.1      | 39.71 ms      | 226    |
 | `/very/deeply...`  | Hono      | 60312.73     | 12.84 ms      | 0      |
-|                    | Cog       | 48344.73     | 16.04 ms      | 0      |
+|                    | Cog       | 52091.64     | 14.93 ms      | 0      |
 |                    | Express   | 14788        | 38.43 ms      | 251    |
 | `/hello?name=John` | Hono      | 61473.46     | 12.53 ms      | 0      |
-|                    | Cog       | 48082.91     | 16.06 ms      | 0      |
+|                    | Cog       | 51797.82     | 14.98 ms      | 0      |
 |                    | Express   | 14464.37     | 38.46 ms      | 263    |
 | `/admin`           | Hono      | 41037.1      | 18.99 ms      | 0      |
-|                    | Cog       | 48856.73     | 15.95 ms      | 0      |
+|                    | Cog       | 53232        | 14.54 ms      | 0      |
 |                    | Express   | 14196.73     | 38.82 ms      | 267    |
 | `/admin/set-token` | Hono      | 38922.19     | 20.06 ms      | 0      |
-|                    | Cog       | 47451.64     | 16.3 ms       | 0      |
+|                    | Cog       | 50488.73     | 15.28 ms      | 0      |
 |                    | Express   | 13982.4      | 37.26 ms      | 272    |
 | `/parse-body`      | Hono      | 26339.64     | 29.06 ms      | 124    |
-|                    | Cog       | 47324.8      | 16.35 ms      | 0      |
+|                    | Cog       | 50189.1      | 15.42 ms      | 0      |
 |                    | Express   | 12873.1      | 40.15 ms      | 293    |
 
 ## Summary

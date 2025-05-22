@@ -4,7 +4,6 @@ import type {
     MiddlewareHandler,
     RequestHandler,
     RequestMethod,
-    Route,
     StringOrJSON
 } from "./types";
 import { Router } from "./router.js";
@@ -12,7 +11,15 @@ import { normalizePath, parseCookies } from "./utils.js";
 
 export class Cog {
     private server: Server;
-    private routes: Route[] = [];
+    private routes: Record<RequestMethod, Map<string, RequestHandler>> = {
+        GET: new Map(),
+        POST: new Map(),
+        PUT: new Map(),
+        DELETE: new Map(),
+        HEAD: new Map(),
+        OPTIONS: new Map(),
+        PATCH: new Map()
+    };
     private middlewares: Middleware[] = [];
 
     constructor() {
@@ -35,20 +42,15 @@ export class Cog {
                 return;
             }
 
-            const requestRoute = normalizePath(req.url);
+            const path = normalizePath(parsedUrl.pathname);
 
-            const cleanUrl = new URL(requestRoute, `http://${req.headers.host}`);
-            cleanUrl.search = "";
-
-            const path = parsedUrl.pathname;
-
-            const foundRoute = this.findRoute(path, req.method as RequestMethod);
+            const foundRouteHandler = this.findRoute(path, req.method as RequestMethod);
             const foundMiddlewares = this.findMiddlewares(path);
 
-            if (foundRoute) {
+            if (foundRouteHandler) {
                 const allHandlers: MiddlewareHandler[] = [
                     ...foundMiddlewares.map((middleware) => middleware.handler),
-                    (req, res, _) => foundRoute.handler(req, res)
+                    (req, res, _) => foundRouteHandler(req, res)
                 ];
 
                 let i = 0;
@@ -107,9 +109,7 @@ export class Cog {
     }
 
     private findRoute(path: string, method: RequestMethod) {
-        return this.routes.find(
-            (route) => route.method === method && normalizePath(route.path) === normalizePath(path)
-        );
+        return this.routes[method].get(path);
     }
 
     private findMiddlewares(path: string) {
@@ -122,7 +122,7 @@ export class Cog {
     }
 
     private addRoute(method: RequestMethod, path: string, handler: RequestHandler) {
-        this.routes.push({ method, path: normalizePath(path), handler });
+        this.routes[method].set(normalizePath(path), handler);
     }
 
     use(path: string, middleware: MiddlewareHandler) {
@@ -160,7 +160,11 @@ export class Cog {
     group(prefix: string, callback: (router: Router) => void) {
         const router = new Router(prefix);
         callback(router);
-        this.routes.push(...router.getRoutes());
+        for (const [method, routes] of Object.entries(router.getRoutes())) {
+            for (const [path, handler] of routes.entries()) {
+                this.routes[method as RequestMethod].set(path, handler);
+            }
+        }
     }
 
     listen(port: number, hostname: string, callback: () => void = () => {}) {

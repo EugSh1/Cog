@@ -1,16 +1,24 @@
-import type { RequestHandler, RequestMethod, Route } from "./types";
+import type { RequestHandler, RequestMethod } from "./types";
 import { normalizePath } from "./utils.js";
 
 export class Router {
     private prefix;
-    private routes: Route[] = [];
+    private routes: Record<RequestMethod, Map<string, RequestHandler>> = {
+        GET: new Map(),
+        POST: new Map(),
+        PUT: new Map(),
+        DELETE: new Map(),
+        HEAD: new Map(),
+        OPTIONS: new Map(),
+        PATCH: new Map()
+    };
 
     constructor(prefix: string) {
         this.prefix = prefix;
     }
 
     private addRoute(method: RequestMethod, path: string, handler: RequestHandler) {
-        this.routes.push({ method, path: normalizePath(this.prefix + path), handler });
+        this.routes[method].set(normalizePath(this.prefix + path), handler);
     }
 
     get(path: string, handler: RequestHandler) {
@@ -44,7 +52,11 @@ export class Router {
     group(subPrefix: string, callback: (router: Router) => void) {
         const nestedRouter = new Router(normalizePath(this.prefix + subPrefix));
         callback(nestedRouter);
-        this.routes.push(...nestedRouter.getRoutes());
+        for (const [method, routes] of Object.entries(nestedRouter.getRoutes())) {
+            for (const [path, handler] of routes.entries()) {
+                this.routes[method as RequestMethod].set(path, handler);
+            }
+        }
     }
 
     getRoutes() {

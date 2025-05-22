@@ -27,7 +27,7 @@ app.listen(3000, "127.0.0.1", () => {
 
 -   **Ultra lightweight** 🪶
 
-    -   Only **21.4 kB unpacked** — one of the smallest HTTP frameworks on npm.
+    -   Only **21.9 kB unpacked** — one of the smallest HTTP frameworks on npm.
     -   Minimal abstraction over Node.js native HTTP for maximum performance.
 
 -   **Zero runtime dependencies** ⚡
