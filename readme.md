@@ -1,5 +1,10 @@
 # Cog
 
+[![npm](https://img.shields.io/npm/v/cog-http)](https://www.npmjs.com/package/cog-http)
+[![Minified size](https://img.shields.io/bundlephobia/min/cog-http)](https://bundlephobia.com/package/cog-http)
+[![Min+gzip size](https://img.shields.io/bundlephobia/minzip/cog-http)](https://bundlephobia.com/package/cog-http)
+[![Dependencies](https://badgen.net/bundlephobia/dependency-count/cog-http)](https://bundlephobia.com/package/cog-http)
+
 A **tiny HTTP framework** built on Node's native `http` module, designed for simplicity and
 flexibility in building backend servers and APIs.
 
