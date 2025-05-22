@@ -1,5 +1,5 @@
 import type { RequestHandler, RequestMethod, Route } from "./types";
-import { normalizePath } from "./utils";
+import { normalizePath } from "./utils.js";
 
 export class Router {
     private prefix;

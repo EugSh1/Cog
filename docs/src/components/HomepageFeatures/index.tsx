@@ -19,7 +19,7 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: "Ultra Lightweight",
-        description: <>Only 20.7 kB unpacked — minimal abstraction over native Node.js HTTP.</>
+        description: <>Only 21.4 kB unpacked — minimal abstraction over native Node.js HTTP.</>
     }
 ];
 

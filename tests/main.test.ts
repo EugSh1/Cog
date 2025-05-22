@@ -103,7 +103,7 @@ describe("test middleware", () => {
 
         let endpointHit = false;
 
-        app.use("*", (_req, res, _next) => {
+        app.use("*", (_req, res) => {
             res.send("Forbidden", 403);
         });
 
@@ -381,7 +381,7 @@ describe("test getting request body", () => {
     it("should throw an error if trying to get body from request handler with unsupported method", async () => {
         const { app, appPort } = setupApp();
 
-        app.get("/", (req, res) => {
+        app.get("/", (_req, res) => {
             res.send("Hello, World!");
         });
 

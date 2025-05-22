@@ -7,8 +7,8 @@ import type {
     Route,
     StringOrJSON
 } from "./types";
-import { Router } from "./router";
-import { normalizePath, parseCookies } from "./utils";
+import { Router } from "./router.js";
+import { normalizePath, parseCookies } from "./utils.js";
 
 export class Cog {
     private server: Server;
@@ -81,7 +81,7 @@ export class Cog {
             });
 
             req.on("end", () => {
-                let body = Buffer.concat(rawBody).toString();
+                const body = Buffer.concat(rawBody).toString();
 
                 if (
                     req.method &&

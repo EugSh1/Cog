@@ -1,6 +1,6 @@
-import "./http-prototype";
-import "./http";
+import "./http-prototype.js";
+import "./http.js";
 
-export * from "./cog";
-export * from "./router";
-export * from "./types";
+export * from "./cog.js";
+export * from "./router.js";
+export * from "./types.js";

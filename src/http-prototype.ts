@@ -1,6 +1,6 @@
 import { ServerResponse } from "http";
 import type { CookieOptions } from "./types";
-import { toCookieString } from "./utils";
+import { toCookieString } from "./utils.js";
 
 ServerResponse.prototype.send = function (data, status = 200) {
     if (typeof data === "object" || Array.isArray(data)) {
