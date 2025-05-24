@@ -27,7 +27,8 @@
         "router",
         "node",
         "nodejs",
-        "api"
+        "api",
+        "lightweight"
     ],
     "scripts": {
         "test": "node --import=tsx --test 'tests/**/*.test.ts'",

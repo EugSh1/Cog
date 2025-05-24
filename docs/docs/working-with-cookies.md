@@ -1,5 +1,6 @@
 ---
 title: Working with cookies
+sidebar_position: 2
 ---
 
 ## Reading Cookies

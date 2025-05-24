@@ -12,6 +12,11 @@ ServerResponse.prototype.send = function (data, status = 200) {
     }
 };
 
+ServerResponse.prototype.html = function (data, status = 200) {
+    this.writeHead(status, { "Content-Type": "text/html" });
+    this.end(data);
+};
+
 ServerResponse.prototype.set = function (
     headerName: string | Record<string, string>,
     headerValue?: string

@@ -29,7 +29,7 @@ describe("test requests", () => {
 
         app.post("/", (req, res) => {
             const message = req.body;
-            res.send(message);
+            res.send(message, 201);
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`, {
@@ -39,6 +39,7 @@ describe("test requests", () => {
                 "Content-Type": "application/json"
             }
         });
+        deepStrictEqual(response.status, 201);
         deepStrictEqual(await response.json(), { message: "Hello, World!" });
     });
 
@@ -541,5 +542,32 @@ describe("test cookies", () => {
         deepStrictEqual(response.headers.getSetCookie(), [
             "token=; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
         ]);
+    });
+});
+
+describe("test sending html responses", () => {
+    it("sending html response should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.get("/", (_, res) => {
+            res.html("<h2>Hello World</h2>");
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`);
+        strictEqual(response.headers.get("content-type"), "text/html");
+        strictEqual(await response.text(), "<h2>Hello World</h2>");
+    });
+
+    it("sending html response with custom status should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.get("/", (_, res) => {
+            res.html("<h2>Not Found</h2>", 404);
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`);
+        strictEqual(response.headers.get("content-type"), "text/html");
+        strictEqual(response.status, 404);
+        strictEqual(await response.text(), "<h2>Not Found</h2>");
     });
 });
