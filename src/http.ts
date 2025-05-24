@@ -12,6 +12,7 @@ declare module "http" {
         set(header: Record<string, string>): void;
         send(data: StringOrJSON, status?: number): void;
         html(data: string, status?: number): void;
+        redirect(url: string, status?: number): void;
         setCookie(name: string, value: string, cookieOptions?: CookieOptions): void;
         clearCookie(name: string, cookieOptions?: CookieOptions): void;
     }

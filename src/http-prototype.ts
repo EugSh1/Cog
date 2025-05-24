@@ -17,6 +17,12 @@ ServerResponse.prototype.html = function (data, status = 200) {
     this.end(data);
 };
 
+ServerResponse.prototype.redirect = function (url, status = 301) {
+    this.statusCode = status;
+    this.set("Location", url);
+    this.end();
+};
+
 ServerResponse.prototype.set = function (
     headerName: string | Record<string, string>,
     headerValue?: string

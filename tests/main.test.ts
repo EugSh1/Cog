@@ -571,3 +571,34 @@ describe("test sending html responses", () => {
         strictEqual(await response.text(), "<h2>Not Found</h2>");
     });
 });
+
+describe("test redirect", () => {
+    it("redirect to external routes should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.get("/", (_, res) => {
+            res.redirect("https://google.com");
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`, { redirect: "follow" });
+        strictEqual(response.status, 200);
+        strictEqual(response.url, "https://www.google.com/");
+    });
+
+    it("redirect to internal routes should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.get("/", (_, res) => {
+            res.redirect(`http://127.0.0.1:${appPort}/hello`);
+        });
+
+        app.get("/hello", (_, res) => {
+            res.send("Hello");
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`, { redirect: "follow" });
+        strictEqual(response.status, 200);
+        strictEqual(response.url, `http://127.0.0.1:${appPort}/hello`);
+        strictEqual(await response.text(), "Hello");
+    });
+});
