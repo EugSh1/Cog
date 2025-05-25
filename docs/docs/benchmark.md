@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Benchmark
 
-We compared **Cog (1.0.5)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
+We compared **Cog (1.0.8)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
 using [autocannon](https://www.npmjs.com/package/autocannon) with the following code:
 
 ```ts
@@ -45,41 +45,35 @@ for (const route of routes) {
 
 ## Results
 
-| Route              | Framework | Requests/sec | Latency (avg) | Errors |
-| ------------------ | --------- | ------------ | ------------- | ------ |
-| `/`                | Hono      | 62514.91     | 12.29 ms      | 0      |
-|                    | Cog       | 55879.28     | 13.86 ms      | 0      |
-|                    | Express   | 14745.1      | 39.71 ms      | 226    |
-| `/very/deeply...`  | Hono      | 60312.73     | 12.84 ms      | 0      |
-|                    | Cog       | 52091.64     | 14.93 ms      | 0      |
-|                    | Express   | 14788        | 38.43 ms      | 251    |
-| `/hello?name=John` | Hono      | 61473.46     | 12.53 ms      | 0      |
-|                    | Cog       | 51797.82     | 14.98 ms      | 0      |
-|                    | Express   | 14464.37     | 38.46 ms      | 263    |
-| `/admin`           | Hono      | 41037.1      | 18.99 ms      | 0      |
-|                    | Cog       | 53232        | 14.54 ms      | 0      |
-|                    | Express   | 14196.73     | 38.82 ms      | 267    |
-| `/admin/set-token` | Hono      | 38922.19     | 20.06 ms      | 0      |
-|                    | Cog       | 50488.73     | 15.28 ms      | 0      |
-|                    | Express   | 13982.4      | 37.26 ms      | 272    |
-| `/parse-body`      | Hono      | 26339.64     | 29.06 ms      | 124    |
-|                    | Cog       | 50189.1      | 15.42 ms      | 0      |
-|                    | Express   | 12873.1      | 40.15 ms      | 293    |
+| Route              | Framework | Requests/sec | Avg Latency (ms) | Errors |
+| ------------------ | --------- | ------------ | ---------------- | ------ |
+| `/`                | Hono      | 62738.91     | 12.24            | 0      |
+|                    | Cog       | 58119.28     | 13.25            | 0      |
+|                    | Express   | 14930.55     | 39.53            | 221    |
+| `/very/deeply...`  | Hono      | 60949.82     | 12.67            | 0      |
+|                    | Cog       | 54064        | 14.24            | 0      |
+|                    | Express   | 14926.91     | 40.22            | 202    |
+| `/hello?name=John` | Hono      | 61613.1      | 12.48            | 0      |
+|                    | Cog       | 53552        | 14.43            | 0      |
+|                    | Express   | 14665.82     | 38.37            | 259    |
+| `/admin`           | Hono      | 41214.55     | 18.92            | 0      |
+|                    | Cog       | 55128.73     | 14.03            | 0      |
+|                    | Express   | 14396        | 38.57            | 264    |
+| `/admin/set-token` | Hono      | 39992.73     | 19.51            | 0      |
+|                    | Cog       | 51946.19     | 14.95            | 0      |
+|                    | Express   | 14106.55     | 38.93            | 269    |
+| `/parse-body`      | Hono      | 27158.4      | 28.96            | 0      |
+|                    | Cog       | 50171.64     | 15.42            | 0      |
+|                    | Express   | 13004        | 39.98            | 291    |
 
 ## Summary
 
-The benchmarks show that **Hono** delivers the highest requests per second and the lowest latency on
-most routes, except for `/admin` and `/admin/set-token`, where **Cog** performs slightly better in
-speed and latency.
-
-**Cog** shows zero errors but its performance is generally lower than Hono's, and given the context,
-it should not be considered a reliable choice for production use.
-
-**Express** performs significantly worse in all metrics, with much higher latency, fewer requests
-per second, and many errors across all routes.
-
-In summary, **Hono** offers the best performance overall, **Cog** is not recommended for production
-despite zero errors, and **Express** lags behind in speed and reliability.
+The benchmark shows that **Cog** performs significantly better than **Express** in all tested
+routes, with much higher requests per second, lower latency, and zero errors. While **Hono**
+outperforms Cog in raw speed and latency, Cog remains a fast and reliable framework considering its
+simplicity and minimal footprint. However, **Cog is still experimental and not recommended for
+production use**. Use it only for learning, experimentation, or lightweight projects, and avoid
+deploying it in critical production environments.
 
 :::caution
 

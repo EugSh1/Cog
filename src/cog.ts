@@ -20,7 +20,9 @@ export class Cog {
         OPTIONS: new Map(),
         PATCH: new Map()
     };
-    private middlewares: Middleware[] = [];
+    private allPathMiddlewares: Middleware[] = [];
+    private specificPathMiddlewares: Middleware[] = [];
+    private static readonly methodsWithoutBody = new Set(["GET", "HEAD", "OPTIONS"]);
 
     constructor() {
         this.server = createServer(async (req, res) => {
@@ -38,7 +40,11 @@ export class Cog {
             try {
                 req.body = (await this.parseRequestBody(req, res)) as StringOrJSON;
             } catch (error) {
-                console.error(error);
+                console.error("Error parsing request body:", error);
+                if (!res.headersSent) {
+                    res.writeHead(400, { "Content-Type": "text/plain" });
+                    res.end("Error parsing request body");
+                }
                 return;
             }
 
@@ -74,9 +80,22 @@ export class Cog {
         return new Promise((resolve, reject) => {
             const rawBody: Buffer[] = [];
 
-            req.on("data", (chunk: Buffer) => {
-                rawBody.push(chunk);
-            });
+            if (req.method && Cog.methodsWithoutBody.has(req.method)) {
+                req.on("data", () => {
+                    res.writeHead(400);
+                    res.end(`${req.method} does not support body`);
+                    req.destroy();
+                    return reject(new Error("Unsupported method for body"));
+                });
+                req.on("end", () => {
+                    resolve("");
+                });
+                return;
+            } else {
+                req.on("data", (chunk: Buffer) => {
+                    rawBody.push(chunk);
+                });
+            }
 
             req.on("error", (err) => {
                 reject(err);
@@ -84,16 +103,6 @@ export class Cog {
 
             req.on("end", () => {
                 const body = Buffer.concat(rawBody).toString();
-
-                if (
-                    req.method &&
-                    body &&
-                    !["POST", "PUT", "PATCH", "DELETE"].includes(req.method)
-                ) {
-                    res.writeHead(400);
-                    res.end(`${req.method} does not support body`);
-                    return reject(new Error("Unsupported method for body"));
-                }
 
                 if (req.headers["content-type"]?.includes("application/json")) {
                     try {
@@ -113,12 +122,16 @@ export class Cog {
     }
 
     private findMiddlewares(path: string) {
-        return this.middlewares.filter(({ path: middlewarePath }) => {
-            if (middlewarePath === "*" || path === middlewarePath) return true;
-            return path.startsWith(
-                middlewarePath.endsWith("/") ? middlewarePath : middlewarePath + "/"
-            );
-        });
+        const foundSpecificPathMiddlewares = this.specificPathMiddlewares.filter(
+            ({ path: middlewarePath }) => {
+                if (path === middlewarePath) return true;
+                return path.startsWith(
+                    middlewarePath.endsWith("/") ? middlewarePath : middlewarePath + "/"
+                );
+            }
+        );
+
+        return [...this.allPathMiddlewares, ...foundSpecificPathMiddlewares];
     }
 
     private addRoute(method: RequestMethod, path: string, handler: RequestHandler) {
@@ -126,7 +139,14 @@ export class Cog {
     }
 
     use(path: string, middleware: MiddlewareHandler) {
-        this.middlewares.push({ path: normalizePath(path), handler: middleware });
+        const normalizedPath = normalizePath(path);
+        const newMiddleware = { path: normalizedPath, handler: middleware };
+
+        if (normalizedPath === "*" || normalizedPath === "/") {
+            this.allPathMiddlewares.push(newMiddleware);
+        } else {
+            this.specificPathMiddlewares.push(newMiddleware);
+        }
     }
 
     get(path: string, handler: RequestHandler) {
