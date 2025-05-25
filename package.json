@@ -1,6 +1,6 @@
 {
     "name": "cog-http",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Tiny HTTP framework built on node:http",
     "license": "MIT",
     "author": "EugSh1",
