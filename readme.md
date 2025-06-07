@@ -78,6 +78,13 @@ Made with:
 
 The documentation is available on [https://eugsh1.github.io/Cog](https://eugsh1.github.io/Cog).
 
+## Contributing
+
+We welcome contributions and appreciate your help in improving Cog.
+
+Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting issues or pull
+requests.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
