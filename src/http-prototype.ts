@@ -12,6 +12,11 @@ ServerResponse.prototype.send = function (data, status = 200) {
     }
 };
 
+ServerResponse.prototype.sendRaw = function (data, status = 200, contentType = "text/plain") {
+    this.writeHead(status, { "Content-Type": contentType });
+    this.end(data);
+};
+
 ServerResponse.prototype.html = function (data, status = 200) {
     this.writeHead(status, { "Content-Type": "text/html" });
     this.end(data);
