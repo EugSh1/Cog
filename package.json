@@ -38,6 +38,9 @@
         "docs:build": "cd docs && npm run build",
         "docs:deploy": "cd docs && npm run deploy"
     },
+    "peerDependencies": {
+        "@types/node": ">=18"
+    },
     "devDependencies": {
         "@eslint/js": "^9.27.0",
         "@types/node": "^22.15.18",

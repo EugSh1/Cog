@@ -68,7 +68,10 @@ Made with:
 ## Usage
 
 1. **Install**:
-    - `npm install cog-http`
+    - ```bash
+      npm install cog-http
+      npm install --save-dev @types/node
+      ```
 2. **Create server**:
     - Import and use the API to define routes, middleware, and handlers.
 3. **Run your server**:

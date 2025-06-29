@@ -26,3 +26,4 @@ To follow this tutorial, you should have:
 
 -   Basic knowledge of JavaScript or TypeScript
 -   Node.js v18.15.0 or higher installed
+-   `@types/node` installed (for TypeScript projects)
