@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eugsh1.github.io/Cog/sitemap.xml
