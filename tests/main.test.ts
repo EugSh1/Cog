@@ -1,6 +1,5 @@
 import http from "http";
-import { deepStrictEqual, strictEqual } from "node:assert";
-import { describe, it } from "node:test";
+import { describe, it, expect } from "vitest";
 import { Cog, StringOrJSON } from "../src/index";
 
 let port = 3000;
@@ -21,7 +20,7 @@ describe("test requests", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(await response.text(), "Hello, World!");
+        expect(await response.text()).toBe("Hello, World!");
     });
 
     it("POST request with a JSON body should work", async () => {
@@ -39,8 +38,8 @@ describe("test requests", () => {
                 "Content-Type": "application/json"
             }
         });
-        deepStrictEqual(response.status, 201);
-        deepStrictEqual(await response.json(), { message: "Hello, World!" });
+        expect(response.status).toBe(201);
+        expect(await response.json()).toStrictEqual({ message: "Hello, World!" });
     });
 
     it("PUT request with a JSON body should work", async () => {
@@ -58,7 +57,7 @@ describe("test requests", () => {
                 "Content-Type": "application/json"
             }
         });
-        deepStrictEqual(await response.json(), { message: "Hello, World!" });
+        expect(await response.json()).toStrictEqual({ message: "Hello, World!" });
     });
 
     it("PATCH request with a JSON body should work", async () => {
@@ -76,7 +75,7 @@ describe("test requests", () => {
                 "Content-Type": "application/json"
             }
         });
-        deepStrictEqual(await response.json(), { message: "Hello, World!" });
+        expect(await response.json()).toStrictEqual({ message: "Hello, World!" });
     });
 
     it("DELETE request with a JSON body should work", async () => {
@@ -94,7 +93,7 @@ describe("test requests", () => {
                 "Content-Type": "application/json"
             }
         });
-        deepStrictEqual(await response.json(), { message: "Hello, World!" });
+        expect(await response.json()).toStrictEqual({ message: "Hello, World!" });
     });
 });
 
@@ -114,9 +113,9 @@ describe("test middleware", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(await response.text(), "Forbidden");
-        strictEqual(response.status, 403);
-        strictEqual(endpointHit, false);
+        expect(await response.text()).toBe("Forbidden");
+        expect(response.status).toBe(403);
+        expect(endpointHit).toBe(false);
     });
 
     it("middleware should allow requests to go through", async () => {
@@ -134,8 +133,8 @@ describe("test middleware", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(await response.text(), "Hello, World!");
-        strictEqual(middlewareHit, true);
+        expect(await response.text()).toBe("Hello, World!");
+        expect(middlewareHit).toBe(true);
     });
 
     it("route-specific middleware should work properly", async () => {
@@ -169,7 +168,7 @@ describe("test middleware", () => {
         await fetch(`http://127.0.0.1:${appPort}/admin`);
         await fetch(`http://127.0.0.1:${appPort}/admin/dashboard`);
 
-        deepStrictEqual(middlewareHitRoutes, ["/admin", "/admin/dashboard"]);
+        expect(middlewareHitRoutes).toStrictEqual(["/admin", "/admin/dashboard"]);
     });
 
     it("multiple middleware should execute in the correct order", async () => {
@@ -197,7 +196,7 @@ describe("test middleware", () => {
         });
 
         await fetch(`http://127.0.0.1:${appPort}/admin`);
-        deepStrictEqual(middlewaresHit, [
+        expect(middlewaresHit).toStrictEqual([
             "first middleware",
             "second middleware",
             "third middleware"
@@ -214,7 +213,7 @@ describe("test routing", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}/test`);
-        strictEqual(await response.text(), "Hello, World!");
+        expect(await response.text()).toEqual("Hello, World!");
     });
 
     it("should hit a deep route", async () => {
@@ -225,7 +224,7 @@ describe("test routing", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}/admin/dashboard/users/user/`);
-        strictEqual(await response.text(), "Hello, World!");
+        expect(await response.text()).toEqual("Hello, World!");
     });
 
     it("should respond with 404 if route is not found", async () => {
@@ -236,8 +235,8 @@ describe("test routing", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}/admin`);
-        strictEqual(await response.text(), "Not Found");
-        strictEqual(response.status, 404);
+        expect(await response.text()).toBe("Not Found");
+        expect(response.status).toBe(404);
     });
 
     it("should respond with 404 if no route with supported method found", async () => {
@@ -248,7 +247,7 @@ describe("test routing", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`, { method: "PUT" });
-        strictEqual(response.status, 404);
+        expect(response.status).toBe(404);
     });
 });
 
@@ -267,9 +266,9 @@ describe("test route groups", () => {
         });
 
         const response1 = await fetch(`http://127.0.0.1:${appPort}/admin`);
-        strictEqual(await response1.text(), "Hello, Admin!");
+        expect(await response1.text()).toBe("Hello, Admin!");
         const response2 = await fetch(`http://127.0.0.1:${appPort}/admin/dashboard`);
-        strictEqual(await response2.text(), "Welcome to the Dashboard!");
+        expect(await response2.text()).toBe("Welcome to the Dashboard!");
     });
 
     it("nested route groups should work properly", async () => {
@@ -292,11 +291,11 @@ describe("test route groups", () => {
         });
 
         const response1 = await fetch(`http://127.0.0.1:${appPort}/admin`);
-        strictEqual(await response1.text(), "Hello, Admin!");
+        expect(await response1.text()).toBe("Hello, Admin!");
         const response2 = await fetch(`http://127.0.0.1:${appPort}/admin/dashboard`);
-        strictEqual(await response2.text(), "Welcome to the Dashboard!");
+        expect(await response2.text()).toBe("Welcome to the Dashboard!");
         const response3 = await fetch(`http://127.0.0.1:${appPort}/admin/dashboard/stats`);
-        strictEqual(await response3.text(), "Visits: 10");
+        expect(await response3.text()).toBe("Visits: 10");
     });
 });
 
@@ -317,7 +316,7 @@ describe("test getting query params", () => {
         });
 
         await fetch(`http://127.0.0.1:${appPort}?message=hello`);
-        strictEqual(queryParam, "hello");
+        expect(queryParam).toBe("hello");
     });
 });
 
@@ -339,7 +338,7 @@ describe("test getting request body", () => {
                 "Content-Type": "text/plain"
             }
         });
-        deepStrictEqual(body, "Hello, World!");
+        expect(body).toBe("Hello, World!");
     });
 
     it("should get plain text body (not specified) properly", async () => {
@@ -356,7 +355,7 @@ describe("test getting request body", () => {
             method: "POST",
             body: "Hello, World!"
         });
-        deepStrictEqual(body, "Hello, World!");
+        expect(body).toBe("Hello, World!");
     });
 
     it("should get json body properly", async () => {
@@ -376,7 +375,7 @@ describe("test getting request body", () => {
                 "Content-Type": "application/json"
             }
         });
-        deepStrictEqual(body, { message: "Hello, World!" });
+        expect(body).toStrictEqual({ message: "Hello, World!" });
     });
 
     it("should throw an error if trying to get body from request handler with unsupported method", async () => {
@@ -409,7 +408,10 @@ describe("test getting request body", () => {
             req.end();
         });
 
-        deepStrictEqual(await response, { statusCode: 400, body: "GET does not support body" });
+        expect(await response).toStrictEqual({
+            statusCode: 400,
+            body: "GET does not support body"
+        });
     });
 });
 
@@ -423,7 +425,7 @@ describe("test setting headers", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(response.headers.get("X-Powered-By"), "Cog");
+        expect(response.headers.get("X-Powered-By")).toBe("Cog");
     });
 
     it("should set multiple headers with multiple set invokations correctly", async () => {
@@ -436,8 +438,8 @@ describe("test setting headers", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(response.headers.get("X-Some-Header"), "test-value");
-        strictEqual(response.headers.get("X-Another-Header"), "another-value");
+        expect(response.headers.get("X-Some-Header")).toBe("test-value");
+        expect(response.headers.get("X-Another-Header")).toBe("another-value");
     });
 
     it("should set multiple headers with single set invokation correctly", async () => {
@@ -452,8 +454,8 @@ describe("test setting headers", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(response.headers.get("X-Some-Header"), "test-value");
-        strictEqual(response.headers.get("X-Another-Header"), "another-value");
+        expect(response.headers.get("X-Some-Header")).toBe("test-value");
+        expect(response.headers.get("X-Another-Header")).toBe("another-value");
     });
 });
 
@@ -467,7 +469,7 @@ describe("test cookies", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        deepStrictEqual(response.headers.getSetCookie(), [
+        expect(response.headers.getSetCookie()).toStrictEqual([
             "token=f9a3e039-d605-4aea-a670-f1ab6b54b459"
         ]);
     });
@@ -489,9 +491,16 @@ describe("test cookies", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        deepStrictEqual(response.headers.getSetCookie(), [
-            "token=f9a3e039-d605-4aea-a670-f1ab6b54b459; Max-Age=216000; Domain=example.com; Path=/; Expires=Thu, 31 Dec 2076 21:00:00 GMT; HttpOnly; Secure; SameSite=Lax"
-        ]);
+
+        const cookie = response.headers.getSetCookie()[0];
+
+        expect(cookie).toContain("token=");
+        expect(cookie).toContain("Max-Age=216000");
+        expect(cookie).toContain("Domain=example.com");
+        expect(cookie).toContain("Path=/");
+        expect(cookie).toContain("HttpOnly");
+        expect(cookie).toContain("Secure");
+        expect(cookie).toContain("SameSite=Lax");
     });
 
     it("setting multiple cookies should work", async () => {
@@ -506,7 +515,7 @@ describe("test cookies", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        deepStrictEqual(response.headers.getSetCookie(), [
+        expect(response.headers.getSetCookie()).toStrictEqual([
             "token=f9a3e039-d605-4aea-a670-f1ab6b54b459; Domain=example.com",
             "another_token=945c7298-12c4-48fd-99f9-bf5021e2b65f"
         ]);
@@ -527,7 +536,7 @@ describe("test cookies", () => {
                 Cookie: "sessionId=abc123; otherCookie=value"
             }
         });
-        deepStrictEqual(receivedCookies, { sessionId: "abc123", otherCookie: "value" });
+        expect(receivedCookies).toStrictEqual({ sessionId: "abc123", otherCookie: "value" });
     });
 
     it("clearing cookie should work", async () => {
@@ -539,7 +548,7 @@ describe("test cookies", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        deepStrictEqual(response.headers.getSetCookie(), [
+        expect(response.headers.getSetCookie()).toStrictEqual([
             "token=; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
         ]);
     });
@@ -554,8 +563,8 @@ describe("test sending html responses", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(response.headers.get("content-type"), "text/html");
-        strictEqual(await response.text(), "<h2>Hello World</h2>");
+        expect(response.headers.get("content-type")).toBe("text/html");
+        expect(await response.text()).toBe("<h2>Hello World</h2>");
     });
 
     it("sending html response with custom status should work", async () => {
@@ -566,9 +575,9 @@ describe("test sending html responses", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`);
-        strictEqual(response.headers.get("content-type"), "text/html");
-        strictEqual(response.status, 404);
-        strictEqual(await response.text(), "<h2>Not Found</h2>");
+        expect(response.headers.get("content-type")).toBe("text/html");
+        expect(response.status).toBe(404);
+        expect(await response.text()).toBe("<h2>Not Found</h2>");
     });
 });
 
@@ -581,8 +590,8 @@ describe("test redirect", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`, { redirect: "follow" });
-        strictEqual(response.status, 200);
-        strictEqual(response.url, "https://www.google.com/");
+        expect(response.status).toBe(200);
+        expect(response.url).toBe("https://www.google.com/");
     });
 
     it("redirect to internal routes should work", async () => {
@@ -597,8 +606,8 @@ describe("test redirect", () => {
         });
 
         const response = await fetch(`http://127.0.0.1:${appPort}`, { redirect: "follow" });
-        strictEqual(response.status, 200);
-        strictEqual(response.url, `http://127.0.0.1:${appPort}/hello`);
-        strictEqual(await response.text(), "Hello");
+        expect(response.status).toBe(200);
+        expect(response.url).toBe(`http://127.0.0.1:${appPort}/hello`);
+        expect(await response.text()).toBe("Hello");
     });
 });

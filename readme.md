@@ -61,9 +61,10 @@ Made with:
 
 -   **Node.js** – Core platform.
 -   **TypeScript** – For type safety and developer experience.
+-   **Vitest** - For fast unit testing.
 -   **Docusaurus** – For generating documentation and project website.
 
-![Made with](https://go-skill-icons.vercel.app/api/icons?i=nodejs,ts&theme=dark)
+![Made with](https://go-skill-icons.vercel.app/api/icons?i=nodejs,ts,vitest&theme=dark)
 
 ## Usage
 
