@@ -1,0 +1,49 @@
+name: Test, Build and Publish
+
+on:
+    push:
+        branches: ["main"]
+        paths: ["src/**", "tests/**", "package.json", "package-lock.json"]
+    pull_request:
+        branches: ["main"]
+        paths: ["src/**", "tests/**", "package.json", "package-lock.json"]
+
+jobs:
+    run-tests:
+        name: Run Tests
+        runs-on: ubuntu-22.04
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4.2.2
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v4.4.0
+              with:
+                  node-version: 20
+                  cache: "npm"
+            - name: Install dependencies
+              run: npm ci
+            - name: Run tests
+              run: npm run test
+
+    build-and-publish:
+        name: Publish to NPM
+        runs-on: ubuntu-22.04
+        needs: run-tests
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4.2.2
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v4.4.0
+              with:
+                  node-version: 20
+                  cache: "npm"
+            - name: Install dependencies
+              run: npm ci
+            - name: Build Project
+              run: npm run build
+            - name: NPM Publish
+              uses: JS-DevTools/npm-publish@v3.1.1
+              with:
+                  token: ${{ secrets.NPM_TOKEN }}
