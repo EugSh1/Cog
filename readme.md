@@ -4,6 +4,7 @@
 [![Minified size](https://img.shields.io/bundlephobia/min/cog-http)](https://bundlephobia.com/package/cog-http)
 [![Min+gzip size](https://img.shields.io/bundlephobia/minzip/cog-http)](https://bundlephobia.com/package/cog-http)
 [![Dependencies](https://badgen.net/bundlephobia/dependency-count/cog-http)](https://bundlephobia.com/package/cog-http)
+[![CI/CD](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml)
 
 A **tiny HTTP framework** built on Node's native `http` module, designed for simplicity and
 flexibility in building backend servers and APIs.
@@ -63,6 +64,7 @@ Made with:
 -   **TypeScript** – For type safety and developer experience.
 -   **Vitest** - For fast unit testing.
 -   **Docusaurus** – For generating documentation and project website.
+-   **GitHub Actions** – For automated CI/CD pipeline.
 
 ![Made with](https://go-skill-icons.vercel.app/api/icons?i=nodejs,ts,vitest&theme=dark)
 
