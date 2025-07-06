@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # Benchmark
 
-We compared **Cog (1.0.8)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
+We compared **Cog (2.0.0)**, **Hono (4.7.10) & @hono/node-server (1.14.1)** and **Express (5.1.0)**
 using [autocannon](https://www.npmjs.com/package/autocannon) with the following code:
 
 ```ts
