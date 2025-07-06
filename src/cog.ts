@@ -53,26 +53,28 @@ export class Cog {
             const foundRouteHandler = this.findRoute(path, req.method as RequestMethod);
             const foundMiddlewares = this.findMiddlewares(path);
 
-            if (foundRouteHandler) {
-                const allHandlers: MiddlewareHandler[] = [
-                    ...foundMiddlewares.map((middleware) => middleware.handler),
-                    (req, res, _) => foundRouteHandler(req, res)
-                ];
-
-                let i = 0;
-
-                function next() {
-                    const currentHandler = allHandlers[i++];
-                    if (!currentHandler) return;
-
-                    currentHandler(req as IncomingMessage & { url: string }, res, next);
+            const allHandlers: MiddlewareHandler[] = [
+                ...foundMiddlewares.map((middleware) => middleware.handler),
+                (req, res, _) => {
+                    if (foundRouteHandler) {
+                        foundRouteHandler(req, res);
+                    } else {
+                        res.writeHead(404);
+                        res.end("Not Found");
+                    }
                 }
+            ];
 
-                next();
-            } else {
-                res.writeHead(404);
-                res.end("Not Found");
+            let i = 0;
+
+            function next() {
+                const currentHandler = allHandlers[i++];
+                if (!currentHandler) return;
+
+                currentHandler(req as IncomingMessage & { url: string }, res, next);
             }
+
+            next();
         });
     }
 

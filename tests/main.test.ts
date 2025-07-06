@@ -202,6 +202,24 @@ describe("test middleware", () => {
             "third middleware"
         ]);
     });
+
+    it("middleware should execute even if no route found", async () => {
+        const { app, appPort } = setupApp();
+
+        let middlewareHit = false;
+
+        app.use("*", (_req, _res, next) => {
+            middlewareHit = true;
+            next();
+        });
+
+        app.get("/admin", (_, res) => {
+            res.send("Hello, Admin!");
+        });
+
+        await fetch(`http://127.0.0.1:${appPort}/non-existent-route`);
+        expect(middlewareHit).toBe(true);
+    });
 });
 
 describe("test routing", () => {
