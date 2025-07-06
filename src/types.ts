@@ -1,4 +1,5 @@
-import type { IncomingMessage, ServerResponse } from "http";
+import type { CogRequest } from "./CogRequest";
+import type { CogResponse } from "./CogResponse";
 
 export type Route = {
     method: RequestMethod;
@@ -11,13 +12,9 @@ export type Middleware = {
     handler: MiddlewareHandler;
 };
 
-export type MiddlewareHandler = (
-    req: IncomingMessage & { url: string },
-    res: ServerResponse,
-    next: () => void
-) => void;
+export type MiddlewareHandler = (req: CogRequest, res: CogResponse, next: () => void) => void;
 
-export type RequestHandler = (req: IncomingMessage & { url: string }, res: ServerResponse) => void;
+export type RequestHandler = (req: CogRequest, res: CogResponse) => void;
 
 export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "OPTIONS" | "PATCH";
 

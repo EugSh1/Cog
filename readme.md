@@ -28,7 +28,7 @@ app.listen(3000, "127.0.0.1", () => {
 
 -   **Ultra lightweight** 🪶
 
-    -   Only **24.1 kB unpacked** — one of the smallest HTTP frameworks on npm.
+    -   Only **25.4 kB unpacked** — one of the smallest HTTP frameworks on npm.
     -   Minimal abstraction over Node.js native HTTP for maximum performance.
 
 -   **Zero runtime dependencies** ⚡
@@ -50,11 +50,6 @@ app.listen(3000, "127.0.0.1", () => {
 
     -   Supports middleware functions for request processing.
     -   Enables modular and reusable logic.
-
--   **Enhanced request & response** 📨
-
-    -   Adds `query` and `body` parsing on `IncomingMessage`.
-    -   Adds helper methods like `set` and `send` on `ServerResponse`.
 
 ## Technologies Used
 

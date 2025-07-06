@@ -8,6 +8,8 @@ import type {
 } from "./types";
 import { Router } from "./router.js";
 import { normalizePath, parseCookies } from "./utils.js";
+import { CogRequest } from "./CogRequest.js";
+import { CogResponse } from "./CogResponse.js";
 
 export class Cog {
     private server: Server;
@@ -33,12 +35,14 @@ export class Cog {
             }
 
             const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-            req.query = Object.fromEntries(parsedUrl.searchParams);
 
-            req.cookies = parseCookies(req.headers.cookie);
+            const query = Object.fromEntries(parsedUrl.searchParams);
+            const cookies = parseCookies(req.headers.cookie);
+
+            let body: StringOrJSON | null = null;
 
             try {
-                req.body = (await this.parseRequestBody(req, res)) as StringOrJSON;
+                body = (await this.parseRequestBody(req, res)) as StringOrJSON;
             } catch (error) {
                 console.error("Error parsing request body:", error);
                 if (!res.headersSent) {
@@ -47,6 +51,8 @@ export class Cog {
                 }
                 return;
             }
+
+            const cogRequest = new CogRequest(req, query, body, cookies, req.url);
 
             const path = normalizePath(parsedUrl.pathname);
 
@@ -59,8 +65,8 @@ export class Cog {
                     if (foundRouteHandler) {
                         foundRouteHandler(req, res);
                     } else {
-                        res.writeHead(404);
-                        res.end("Not Found");
+                        res.raw.writeHead(404);
+                        res.raw.end("Not Found");
                     }
                 }
             ];
@@ -71,7 +77,7 @@ export class Cog {
                 const currentHandler = allHandlers[i++];
                 if (!currentHandler) return;
 
-                currentHandler(req as IncomingMessage & { url: string }, res, next);
+                currentHandler(cogRequest, new CogResponse(res), next);
             }
 
             next();

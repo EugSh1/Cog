@@ -1,6 +1,11 @@
-import "./http-prototype.js";
-import "./http.js";
-
-export * from "./cog.js";
-export * from "./router.js";
-export * from "./types.js";
+export { Cog } from "./cog.js";
+export { Router } from "./router.js";
+export { CogRequest } from "./CogRequest.js";
+export { CogResponse } from "./CogResponse.js";
+export {
+    MiddlewareHandler,
+    RequestHandler,
+    RequestMethod,
+    StringOrJSON,
+    CookieOptions
+} from "./types.js";
