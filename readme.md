@@ -39,7 +39,7 @@ app.listen(3000, "127.0.0.1", () => {
 -   **TypeScript-ready** 🛡️
 
     -   Type definitions included.
-    -   Extends native HTTP types with convenient helpers.
+    -   Custom `CogRequest` and `CogResponse` classes with convenient helpers.
 
 -   **Easy routing** 🛣️
 
