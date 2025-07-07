@@ -95,6 +95,40 @@ describe("test requests", () => {
         });
         expect(await response.json()).toStrictEqual({ message: "Hello, World!" });
     });
+
+    it("OPTIONS request should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.options("/", (_, res) => {
+            res.set("Allow", "GET, POST, PUT, DELETE, OPTIONS");
+            res.send("", 200);
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`, {
+            method: "OPTIONS"
+        });
+        expect(response.status).toBe(200);
+        expect(response.headers.get("Allow")).toBe("GET, POST, PUT, DELETE, OPTIONS");
+        expect(await response.text()).toBe("");
+    });
+
+    it("HEAD request should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.head("/", (_, res) => {
+            res.set("Content-Length", "13");
+            res.set("X-Custom-Header", "head-response");
+            res.send("", 200);
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`, {
+            method: "HEAD"
+        });
+        expect(response.status).toBe(200);
+        expect(response.headers.get("Content-Length")).toBe("13");
+        expect(response.headers.get("X-Custom-Header")).toBe("head-response");
+        expect(await response.text()).toBe("");
+    });
 });
 
 describe("test middleware", () => {
@@ -289,6 +323,123 @@ describe("test route groups", () => {
         expect(await response2.text()).toBe("Welcome to the Dashboard!");
     });
 
+    it("POST method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.post("/users", (req, res) => {
+                const user = req.body;
+                res.send(user, 201);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users`, {
+            method: "POST",
+            body: JSON.stringify({ name: "John", email: "john@example.com" }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        expect(response.status).toBe(201);
+        expect(await response.json()).toStrictEqual({ name: "John", email: "john@example.com" });
+    });
+
+    it("PUT method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.put("/users/1", (req, res) => {
+                const user = req.body;
+                res.send(user);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users/1`, {
+            method: "PUT",
+            body: JSON.stringify({ name: "Jane", email: "jane@example.com" }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        expect(await response.json()).toStrictEqual({ name: "Jane", email: "jane@example.com" });
+    });
+
+    it("PATCH method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.patch("/users/1", (req, res) => {
+                const updates = req.body;
+                res.send(updates);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users/1`, {
+            method: "PATCH",
+            body: JSON.stringify({ email: "updated@example.com" }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        expect(await response.json()).toStrictEqual({ email: "updated@example.com" });
+    });
+
+    it("DELETE method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.delete("/users/1", (_, res) => {
+                res.send({ message: "User deleted" }, 200);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users/1`, {
+            method: "DELETE"
+        });
+        expect(response.status).toBe(200);
+        expect(await response.json()).toStrictEqual({ message: "User deleted" });
+    });
+
+    it("HEAD method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.head("/users", (_, res) => {
+                res.set("X-Total-Count", "100");
+                res.set("Content-Type", "application/json");
+                res.send("", 200);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users`, {
+            method: "HEAD"
+        });
+        expect(response.status).toBe(200);
+        expect(response.headers.get("X-Total-Count")).toBe("100");
+        expect(response.headers.get("Content-Type")).toBe("text/plain");
+        expect(await response.text()).toBe("");
+    });
+
+    it("OPTIONS method in route groups should work", async () => {
+        const { app, appPort } = setupApp();
+
+        app.group("/api", (api) => {
+            api.options("/users", (_, res) => {
+                res.set("Allow", "GET, POST, PUT, DELETE, OPTIONS");
+                res.set("Access-Control-Allow-Origin", "*");
+                res.send("", 200);
+            });
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/users`, {
+            method: "OPTIONS"
+        });
+        expect(response.status).toBe(200);
+        expect(response.headers.get("Allow")).toBe("GET, POST, PUT, DELETE, OPTIONS");
+        expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
+        expect(await response.text()).toBe("");
+    });
+
     it("nested route groups should work properly", async () => {
         const { app, appPort } = setupApp();
 
@@ -357,6 +508,25 @@ describe("test getting request body", () => {
             }
         });
         expect(body).toBe("Hello, World!");
+    });
+
+    it("should send an error if JSON body is invalid", async () => {
+        const { app, appPort } = setupApp();
+
+        app.post("/", (req, res) => {
+            const body = req.body;
+            res.send(`Hello, ${body}!`);
+        });
+
+        const response = await fetch(`http://127.0.0.1:${appPort}`, {
+            method: "POST",
+            body: "{ Hello, World!",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        expect(response.status).toBe(400);
+        expect(await response.text()).toBe("Error parsing request body");
     });
 
     it("should get plain text body (not specified) properly", async () => {
