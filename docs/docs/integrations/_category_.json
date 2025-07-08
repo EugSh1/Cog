@@ -1,0 +1,7 @@
+{
+    "label": "Integrations",
+    "link": {
+        "type": "generated-index",
+        "description": "Discover how flexible Cog is and explore various integrations like React SSR and static file serving with sirv."
+    }
+}
