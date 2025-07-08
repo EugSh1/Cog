@@ -1,6 +1,6 @@
 ---
 title: Redirect Responses
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Sending Redirect Responses
