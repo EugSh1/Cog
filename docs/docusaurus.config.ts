@@ -82,15 +82,27 @@ const config: Config = {
                         {
                             label: "Tutorial",
                             to: "/docs/intro"
+                        },
+                        {
+                            label: "Core Concepts",
+                            to: "/docs/category/core-concepts"
+                        },
+                        {
+                            label: "Integrations",
+                            to: "/docs/category/integrations"
                         }
                     ]
                 },
                 {
-                    title: "GitHub",
+                    title: "Links",
                     items: [
                         {
                             label: "GitHub",
                             href: "https://github.com/EugSh1/Cog"
+                        },
+                        {
+                            label: "NPM",
+                            href: "https://www.npmjs.com/package/cog-http"
                         }
                     ]
                 }
