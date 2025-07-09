@@ -1,6 +1,6 @@
 ---
 title: Serve static files with Sirv
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Serve static files with Sirv

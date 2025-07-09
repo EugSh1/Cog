@@ -1,6 +1,6 @@
 ---
 title: SSR with React
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Server-side rendering with React
