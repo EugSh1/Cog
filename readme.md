@@ -1,8 +1,8 @@
 # Cog
 
 [![npm](https://img.shields.io/npm/v/cog-http)](https://www.npmjs.com/package/cog-http)
-[![Minified size](https://img.shields.io/bundlephobia/min/cog-http)](https://bundlephobia.com/package/cog-http)
-[![Min+gzip size](https://img.shields.io/bundlephobia/minzip/cog-http)](https://bundlephobia.com/package/cog-http)
+[![Unpacked size](https://img.shields.io/npm/unpacked-size/cog-http)](https://www.npmjs.com/package/cog-http)
+[![npm weekly downloads](https://img.shields.io/npm/dw/cog-http)](https://www.npmjs.com/package/cog-http)
 [![Dependencies](https://badgen.net/bundlephobia/dependency-count/cog-http)](https://bundlephobia.com/package/cog-http)
 [![CI/CD](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml)
 
