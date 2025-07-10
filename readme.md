@@ -28,7 +28,7 @@ app.listen(3000, "127.0.0.1", () => {
 
 -   **Ultra lightweight** 🪶
 
-    -   Only **25.4 kB unpacked** — one of the smallest HTTP frameworks on npm.
+    -   Only **25.4 kB unpacked** - among the smallest HTTP frameworks on npm.
     -   Minimal abstraction over Node.js native HTTP for maximum performance.
 
 -   **Zero runtime dependencies** ⚡
@@ -41,15 +41,16 @@ app.listen(3000, "127.0.0.1", () => {
     -   Type definitions included.
     -   Custom `CogRequest` and `CogResponse` classes with convenient helpers.
 
--   **Easy routing** 🛣️
+-   **Easy integration** 🧩
 
-    -   Simple and intuitive routing API.
+    -   Easily integrates with tools like **React (SSR)**, **sirv**, **cors**, **helmet**, or any
+        Node-compatible utility.
+    -   Cog stays out of your way - no magic, no lock-in.
+
+-   **Easy routing & middleware** 🔄
+
+    -   Simple and intuitive routing API with middleware support.
     -   Easy to use and extend.
-
--   **Middleware support** 🔄
-
-    -   Supports middleware functions for request processing.
-    -   Enables modular and reusable logic.
 
 ## Technologies Used
 
