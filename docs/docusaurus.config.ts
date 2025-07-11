@@ -49,7 +49,6 @@ const config: Config = {
     ],
 
     themeConfig: {
-        image: "img/docusaurus-social-card.jpg",
         colorMode: {
             respectPrefersColorScheme: true
         },
@@ -67,7 +66,7 @@ const config: Config = {
                     label: "Tutorial"
                 },
                 {
-                    href: "https://github.com/EugSh1/Cog",
+                    href: "https://github.com/EugSh1/cog-http",
                     label: "GitHub",
                     position: "right"
                 }
