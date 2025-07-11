@@ -1,10 +1,10 @@
-# Cog
+# cog-http
 
 [![npm](https://img.shields.io/npm/v/cog-http)](https://www.npmjs.com/package/cog-http)
 [![Unpacked size](https://img.shields.io/npm/unpacked-size/cog-http)](https://www.npmjs.com/package/cog-http)
 [![npm weekly downloads](https://img.shields.io/npm/dw/cog-http)](https://www.npmjs.com/package/cog-http)
 [![Dependencies](https://badgen.net/bundlephobia/dependency-count/cog-http)](https://bundlephobia.com/package/cog-http)
-[![CI/CD](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EugSh1/Cog/actions/workflows/ci-cd.yml)
+[![CI/CD](https://github.com/EugSh1/cog-http/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EugSh1/cog-http/actions/workflows/ci-cd.yml)
 
 A **tiny HTTP framework** built on Node's native `http` module, designed for simplicity and
 flexibility in building backend servers and APIs.
@@ -78,11 +78,12 @@ Made with:
 
 ## Documentation
 
-The documentation is available on [https://eugsh1.github.io/Cog](https://eugsh1.github.io/Cog).
+The documentation is available on
+[https://eugsh1.github.io/cog-http](https://eugsh1.github.io/cog-http).
 
 ## Contributing
 
-We welcome contributions and appreciate your help in improving Cog.
+We welcome contributions and appreciate your help in improving cog-http.
 
 Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting issues or pull
 requests.

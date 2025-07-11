@@ -3,17 +3,17 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-    title: "Cog",
+    title: "cog-http",
     tagline: "Tiny HTTP framework built on node:http",
     favicon: "img/favicon.ico",
 
     url: "https://eugsh1.github.io",
 
-    baseUrl: "/Cog",
+    baseUrl: "/cog-http",
     trailingSlash: false,
 
     organizationName: "EugSh1",
-    projectName: "Cog",
+    projectName: "cog-http",
 
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
@@ -54,9 +54,9 @@ const config: Config = {
             respectPrefersColorScheme: true
         },
         navbar: {
-            title: "Cog",
+            title: "cog-http",
             logo: {
-                alt: "Cog Logo",
+                alt: "cog-http Logo",
                 src: "img/logo.svg"
             },
             items: [
