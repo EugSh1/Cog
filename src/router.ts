@@ -2,8 +2,8 @@ import type { RequestHandler, RequestMethod } from "./types";
 import { normalizePath } from "./utils.js";
 
 export class Router {
-    private prefix;
-    private routes: Record<RequestMethod, Map<string, RequestHandler>> = {
+    private readonly prefix;
+    private readonly routes: Record<RequestMethod, Map<string, RequestHandler>> = {
         GET: new Map(),
         POST: new Map(),
         PUT: new Map(),

@@ -12,8 +12,8 @@ import { CogRequest } from "./CogRequest.js";
 import { CogResponse } from "./CogResponse.js";
 
 export class Cog {
-    private server: Server;
-    private routes: Record<RequestMethod, Map<string, RequestHandler>> = {
+    private readonly server: Server;
+    private readonly routes: Record<RequestMethod, Map<string, RequestHandler>> = {
         GET: new Map(),
         POST: new Map(),
         PUT: new Map(),
@@ -22,8 +22,8 @@ export class Cog {
         OPTIONS: new Map(),
         PATCH: new Map()
     };
-    private allPathMiddlewares: Middleware[] = [];
-    private specificPathMiddlewares: Middleware[] = [];
+    private readonly allPathMiddlewares: Middleware[] = [];
+    private readonly specificPathMiddlewares: Middleware[] = [];
     private static readonly methodsWithoutBody = new Set(["GET", "HEAD", "OPTIONS"]);
 
     constructor() {
